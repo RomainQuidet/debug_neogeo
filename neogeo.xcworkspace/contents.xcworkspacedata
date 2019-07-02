@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:neogeo_front_debug/neogeo_front_debug.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../neogeo_libretro/build/neogeo_libretro.xcodeproj">
+   </FileRef>
+</Workspace>
