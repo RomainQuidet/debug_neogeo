@@ -191,10 +191,11 @@ int main(int argc, const char * argv[]) {
 		if (buffer_updated) {
 			SDL_UpdateTexture(texture, NULL, buffer, (int)buffer_pitch);
 			buffer_updated = false;
+			SDL_RenderClear(renderer);
+			SDL_RenderCopy(renderer, texture, NULL, NULL);
+			SDL_RenderPresent(renderer);
 		}
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, texture, NULL, NULL);
-		SDL_RenderPresent(renderer);
+		SDL_Delay(20);
 	}
 	
 	SDL_RemoveTimer(my_timer_id);
