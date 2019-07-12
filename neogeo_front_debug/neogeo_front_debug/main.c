@@ -63,6 +63,12 @@ void video_refresh(const void *data, unsigned width,
 	buffer_updated = true;
 }
 
+size_t audio_sample_batch(const int16_t *data, size_t frames) {
+	
+	
+	return 0;
+}
+
 void input_poll() {
 	
 }
@@ -120,7 +126,7 @@ int main(int argc, const char * argv[]) {
 	SDL_Texture *texture;
 	SDL_Event event;
 	
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO) < 0) {
 		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't initialize SDL: %s", SDL_GetError());
 		return 3;
 	}
@@ -139,7 +145,7 @@ int main(int argc, const char * argv[]) {
 	
 	retro_set_video_refresh(&video_refresh);
 	//	retro_set_audio_sample(retro_audio_sample_t);
-	//retro_set_audio_sample_batch(retro_audio_sample_batch_t);
+	retro_set_audio_sample_batch(&audio_sample_batch);
 	retro_set_input_poll(&input_poll);
 	retro_set_input_state(&input_state);
 	
