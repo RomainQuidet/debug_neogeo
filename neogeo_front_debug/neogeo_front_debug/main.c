@@ -63,9 +63,12 @@ void video_refresh(const void *data, unsigned width,
 	buffer_updated = true;
 }
 
+SDL_AudioDeviceID dev;
 size_t audio_sample_batch(const int16_t *data, size_t frames) {
-	
-	
+	int err = SDL_QueueAudio(dev, data, (uint32_t)frames * 4);
+	if (err != 0) {
+		SDL_Log("Failed to queue audio: %s", SDL_GetError());
+	}
 	return 0;
 }
 
@@ -186,6 +189,29 @@ int main(int argc, const char * argv[]) {
 		return 3;
 	}
 	
+	int audiocount = SDL_GetNumAudioDevices(0);
+	for (int i = 0; i < audiocount; i++) {
+		printf("Audio device %d: %s\n", i, SDL_GetAudioDeviceName(i, 0));
+	}
+	
+	SDL_AudioSpec want, have;
+	SDL_memset(&want, 0, sizeof(want));
+	want.freq = 44100;
+	want.format = AUDIO_S16SYS;
+	want.channels = 2;
+	want.samples = 4096;
+	want.callback = NULL;
+	
+	dev = SDL_OpenAudioDevice(NULL, 0, &want, &have, 0);
+	if (dev == 0) {
+		SDL_Log("Failed to open audio: %s", SDL_GetError());
+	} else {
+		if (have.format != want.format) { /* we let this one thing change. */
+			SDL_Log("We didn't get requested audio format.");
+		}
+		SDL_PauseAudioDevice(dev, 0);
+	}
+	
 	Uint32 first_launch = 2000;
 	SDL_TimerID my_timer_id = SDL_AddTimer(first_launch, frame_callback, NULL);
 	
@@ -204,6 +230,7 @@ int main(int argc, const char * argv[]) {
 		SDL_Delay(20);
 	}
 	
+	SDL_CloseAudioDevice(dev);
 	SDL_RemoveTimer(my_timer_id);
 	SDL_DestroyTexture(texture);
 	SDL_DestroyRenderer(renderer);
