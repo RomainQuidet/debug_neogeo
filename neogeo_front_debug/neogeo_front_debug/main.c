@@ -11,6 +11,8 @@
 
 #include "libretro.h"
 
+#define SOUND_RECORD_TO_FILE	0
+
 Uint32 frame_delay = (1000 / 60);	// ms
 Uint32 frame_callback(Uint32 interval, void *param) {
 	retro_run();
@@ -64,10 +66,14 @@ void video_refresh(const void *data, unsigned width,
 }
 
 SDL_AudioDeviceID dev;
+FILE *sound_file_p = NULL;
 size_t audio_sample_batch(const int16_t *data, size_t frames) {
 	int err = SDL_QueueAudio(dev, data, (uint32_t)frames * 4);
 	if (err != 0) {
 		SDL_Log("Failed to queue audio: %s", SDL_GetError());
+	}
+	if (sound_file_p != NULL) {
+		fwrite(data, (uint32_t)frames * 4, 1, sound_file_p);
 	}
 	return 0;
 }
@@ -212,6 +218,10 @@ int main(int argc, const char * argv[]) {
 		SDL_PauseAudioDevice(dev, 0);
 	}
 	
+#if SOUND_RECORD_TO_FILE
+	sound_file_p = fopen("/Users/romain/Downloads/neogeo_sound.raw", "wb");
+#endif
+	
 	Uint32 first_launch = 2000;
 	SDL_TimerID my_timer_id = SDL_AddTimer(first_launch, frame_callback, NULL);
 	
@@ -237,6 +247,10 @@ int main(int argc, const char * argv[]) {
 	SDL_DestroyWindow(window);
 	
 	SDL_Quit();
+	
+	if (sound_file_p != NULL) {
+		fclose(sound_file_p);
+	}
 	
 	return 0;
 }
