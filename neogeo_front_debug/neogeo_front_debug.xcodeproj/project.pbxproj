@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2F1EF45022C90A99008C442A /* libSDL2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F86C56422C8F2EC00ACD64E /* libSDL2.dylib */; };
-		2F1EF45222C90AC7008C442A /* libneogeo_libretro.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1EF45122C90AC7008C442A /* libneogeo_libretro.dylib */; };
 		2F86C55D22C8EED700ACD64E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F86C55C22C8EED700ACD64E /* main.c */; };
+		7AD94C2022EF757B006CF49C /* libneogeo_libretro.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1EF44E22C90568008C442A /* libneogeo_libretro.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,7 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F1EF45222C90AC7008C442A /* libneogeo_libretro.dylib in Frameworks */,
+				7AD94C2022EF757B006CF49C /* libneogeo_libretro.dylib in Frameworks */,
 				2F1EF45022C90A99008C442A /* libSDL2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,6 +89,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2F86C56022C8EED700ACD64E /* Build configuration list for PBXNativeTarget "neogeo_front_debug" */;
 			buildPhases = (
+				7A04378F22F9635900069EA1 /* ShellScript */,
 				2F86C55522C8EED700ACD64E /* Sources */,
 				2F86C55622C8EED700ACD64E /* Frameworks */,
 				2F86C55722C8EED700ACD64E /* CopyFiles */,
@@ -122,6 +123,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 2F86C55022C8EED700ACD64E;
 			productRefGroup = 2F86C55A22C8EED700ACD64E /* Products */;
@@ -132,6 +134,26 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7A04378F22F9635900069EA1 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nset -e\ncd ../../neogeo_libretro/build\n\nTARGET_NAME=\"ALL_BUILD\"\nCONFIGURATION=\"Debug\"\n\nxcodebuild -target ${TARGET_NAME} -configuration ${CONFIGURATION} -sdk macosx build\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2F86C55522C8EED700ACD64E /* Sources */ = {
